@@ -1,0 +1,24 @@
+{
+  "name": "ast-viewer",
+  "version": "1.0.0",
+  "description": "AST Viewer for Phoenix",
+  "main": "./js/app.js",
+  "scripts": {
+    "deploy": "cd .. && mix assets.deploy",
+    "watch": "cd .. && mix assets.watch"
+  },
+  "dependencies": {
+    "phoenix": "^1.7.10",
+    "phoenix_html": "^3.3.3",
+    "phoenix_live_view": "^0.20.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "lucide-react": "^0.263.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.23.5",
+    "@babel/preset-env": "^7.23.5",
+    "@babel/preset-react": "^7.23.5",
+    "esbuild": "^0.19.8"
+  }
+}

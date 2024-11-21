@@ -1,50 +1,21 @@
 
 <script>
-var tree = [{
-  name: 'Vegetables',
-  children: []
-  }, {
-  name: 'Fruits',
-  children: [{
-    name: 'Apple',
-    children: []
-  }, {
-    name: 'Orange',
-    children: []
-  }, {
-    name: 'Lemon',
-    children: []
-  }]
-  }, {
-  name: 'Candy',
-  children: [{
-    name: 'Gummies',
-    children: []
-  }, {
-    name: 'Chocolate',
-    children: [{
-    name: 'M & M\'s',
-    children: []
-    }, {
-    name: 'Hershey Bar',
-    children: []
-    }]
-  }, ]
-  }, {
-  name: 'Bread',
-  children: []
-}];
-
-var ast = <%= raw @ast %>
-
-console.log("Running the tree")
-
 window.addEventListener('phx:ast-updated', (e) => { 
     // Ast gets the quoted ast, not the object ( '[ .. ]' instead of [ ... ] )
     ast = eval(e.detail.ast);
     console.log("Recreating tree")
     console.log(ast)
     var t = new TreeView(ast, 'tree');
+    t.on('expand', function (target,leaves) { 
+      window.abc = target
+      target.target.firstChild.nextSibling.style.color = "gray" 
+      console.log(target); 
+    });
+    t.on('collapse', function (target,leaves) { 
+      window.abc = target
+      target.target.firstChild.nextSibling.style.color = "black" 
+      console.log(target); 
+    });
 });
 </script>
     

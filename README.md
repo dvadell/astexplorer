@@ -1,18 +1,17 @@
-# AstExplorer
+t.on('select', function (target,data) { 
+  alert('select'); 
+});
+t.on('expand', function (target,leaves) { 
+  alert('expand'); 
+});
+t.on('expandAll', function () { 
+  alert('expand'); 
+});
+t.on('collapse', function (target,leaves) { 
+  alert('collapse'); 
+});
+t.on('collapseAll', function () { 
+  alert('collapse'); 
+});
 
-To start your Phoenix server:
-
-  * Run `mix setup` to install and setup dependencies
-  * Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
-
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
-
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
-
-## Learn more
-
-  * Official website: https://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Forum: https://elixirforum.com/c/phoenix-forum
-  * Source: https://github.com/phoenixframework/phoenix
+https://www.cssscript.com/create-a-simple-tree-view-using-vanilla-javascript-js-treeview/

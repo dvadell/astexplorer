@@ -1,3 +1,51 @@
+
+<script>
+var tree = [{
+  name: 'Vegetables',
+  children: []
+  }, {
+  name: 'Fruits',
+  children: [{
+    name: 'Apple',
+    children: []
+  }, {
+    name: 'Orange',
+    children: []
+  }, {
+    name: 'Lemon',
+    children: []
+  }]
+  }, {
+  name: 'Candy',
+  children: [{
+    name: 'Gummies',
+    children: []
+  }, {
+    name: 'Chocolate',
+    children: [{
+    name: 'M & M\'s',
+    children: []
+    }, {
+    name: 'Hershey Bar',
+    children: []
+    }]
+  }, ]
+  }, {
+  name: 'Bread',
+  children: []
+}];
+
+var ast = <%= raw @ast %>
+
+console.log("Running the tree")
+
+window.addEventListener('phx:ast-updated', (e) => { 
+    console.log("Recreating tree")
+    var t = new TreeView(ast, 'tree');
+});
+</script>
+    
+
     <h1>AST Explorer!</h1>
 
   <div class="relative w-full min-w-[200px]">

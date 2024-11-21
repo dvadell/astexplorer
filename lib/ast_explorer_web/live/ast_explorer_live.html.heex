@@ -40,7 +40,10 @@ var ast = <%= raw @ast %>
 console.log("Running the tree")
 
 window.addEventListener('phx:ast-updated', (e) => { 
+    // Ast gets the quoted ast, not the object ( '[ .. ]' instead of [ ... ] )
+    ast = eval(e.detail.ast);
     console.log("Recreating tree")
+    console.log(ast)
     var t = new TreeView(ast, 'tree');
 });
 </script>

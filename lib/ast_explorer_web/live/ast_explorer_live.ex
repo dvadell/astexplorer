@@ -16,12 +16,7 @@ defmodule AstExplorerWeb.AstExplorerLive do
   # ]
 
   def ast_to_json(ast) do
-    children =  [%{name: ":def", children: []}, 
-                 %{name: "(list - 3 items)", children: []}, 
-                 %{name: "(list - 3 items)", children: []}
-                ]
-    [ %{name: "ast (tuple)", children: children} ]
-    |> Jason.encode!
+    ~s|[#{x(ast)}]| 
   end
 
   def handle_event("explore", params, socket) do
@@ -32,8 +27,44 @@ defmodule AstExplorerWeb.AstExplorerLive do
     
     socket = 
       assign(socket, [ast: ast_to_json(ast), code: code]) 
-      |> push_event("ast-updated", %{})
+      |> push_event("ast-updated", %{ast: ast_to_json(ast)})
     IO.inspect(socket.assigns)
     {:noreply, socket}
   end
+
+  def x(var) when is_tuple(var) do
+    children = 
+      var
+      |> Tuple.to_list()
+      |> Enum.map(fn var -> x(var) end)
+    ~s|{ name: "(Map - X items)", children: [#{children}] }, \n|
+  end
+
+  def x(var) when is_list(var) do
+    children = Enum.map(var, fn var -> x(var) end)
+    ~s|{ name: "(list - X items)", children: [#{children}] }, \n|
+  end
+
+  def x(var) do
+    ~s|{name: "#{var}", children: []}, \n|
+  end
+
+  def xs(var) do
+    cond do
+      is_tuple(var) ->
+        var
+        |> Tuple.to_list()
+        |> Enum.map(fn var -> x(var) end)
+        |> List.to_tuple()
+
+      is_list(var) ->
+        var
+        |> Enum.map(fn var -> x(var) end)
+
+      true ->
+        var
+    end
+  end
+
+
 end

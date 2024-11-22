@@ -34,34 +34,38 @@ defmodule AstExplorerWeb.AstExplorerLive do
   end
 
   def x(var) when is_tuple(var) do
+    len = Tuple.to_list(var) |> length
     node =
     case var do
-      {atom, [{:line, n}], rest} -> %{name: "Line #{n}", data: {atom, rest}}
-      _ -> %{name: "{...}", data: var}
+      {atom, [{:line, n}], rest} when is_atom(atom) -> %{name: ":#{atom} // Line #{n}", data: {rest}}
+      _ -> %{name: "TUPLE(#{len})", data: var}
     end
 
-    len = Tuple.to_list(node.data) |> length
     children = 
       node.data
         |> Tuple.to_list()
         |> Enum.map(fn var -> x(var) end)
 
-    ~s|{ name: "#{node.name} - #{len} items", children: [#{children}] }, \n|
+    ~s|{ name: "#{node.name}", children: [#{children}] }, \n|
   end
 
   def x(var, [line: n]) when is_tuple(var) do
     len = Tuple.to_list(var) |> length
-    ~s|{ name: "Line #{n} - #{len} items", children: [] }, \n|
+    ~s|{ name: " - Line #{n} - (#{len})", children: [] }, \n|
   end
 
   def x(var) when is_list(var) do
     len = length(var)
-    children = Enum.map(var, fn var -> x(var) end)
-    ~s|{ name: "[...] - #{len} items", children: [#{children}] }, \n|
+    case len do
+      0 -> ~s|{ name: "- (empty list)", children: [] }, \n|
+      len -> 
+        children = Enum.map(var, fn var -> x(var) end)
+        ~s|{ name: "LIST(#{len})", children: [#{children}] }, \n|
+    end
   end
 
   def x(var) when is_atom(var) do
-    ~s|{name: ":#{var}", children: []}, \n|
+    ~s|{name: " - :#{var}", children: []}, \n|
   end
 
   def x(var) do

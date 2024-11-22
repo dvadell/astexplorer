@@ -4,12 +4,17 @@ window.addEventListener('phx:ast-updated', (e) => {
     // Ast gets the quoted ast, not the object ( '[ .. ]' instead of [ ... ] )
     ast = eval(e.detail.ast);
     console.log("Recreating tree")
-    console.log(ast)
     var t = new TreeView(ast, 'tree');
     t.on('expand', function (target,leaves) { 
       window.abc = target
       target.target.firstChild.nextSibling.style.color = "gray" 
-      console.log(target); 
+      x = document.getElementsByClassName("tree-leaf-text")
+      for (let item of x) {
+        if (item.innerText.startsWith(":")) {
+          console.log("painted yellow")
+          item.style.background = "yellow"
+        }
+      }
     });
     t.on('collapse', function (target,leaves) { 
       window.abc = target
@@ -24,6 +29,8 @@ window.addEventListener('phx:ast-updated', (e) => {
 
   <div class="relative w-full min-w-[200px]">
   <form phx-change="explore">
+    <input type="checkbox" name="force_expanded" phx-value="force_expanded">Keep the AST expanded
+
     <textarea
       name="code"
       phx-value="code"

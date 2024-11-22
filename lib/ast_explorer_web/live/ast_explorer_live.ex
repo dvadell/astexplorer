@@ -2,7 +2,7 @@ defmodule AstExplorerWeb.AstExplorerLive do
   use AstExplorerWeb, :live_view
 
   def mount(_params, _session, socket) do
-    socket = assign(socket, [ast: "[]"])
+    socket = assign(socket, [ast: "[]", orig_ast: ""])
     {:ok, socket}
   end
 
@@ -28,6 +28,7 @@ defmodule AstExplorerWeb.AstExplorerLive do
     
     socket = 
       assign(socket, [ast: ast_to_json(ast, force_expanded: force_expanded), code: code]) 
+      |> assign(orig_ast: "#{inspect(ast)}")
       |> push_event("ast-updated", %{ast: ast_to_json(ast, force_expanded: force_expanded)})
     IO.inspect(socket.assigns)
     {:noreply, socket}
